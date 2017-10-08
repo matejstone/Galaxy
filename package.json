@@ -17,7 +17,14 @@
   },
   "homepage": "https://github.com/matejstone/Galaxy#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "color": "^2.0.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.1",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "promise-mysql": "^3.1.0",
     "pureimage": "^0.1.3"
   }
 }
