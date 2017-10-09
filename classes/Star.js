@@ -38,8 +38,8 @@ class Star extends BaseObject {
           
     }
 
-    static get MAX_NUMBER_OF_PLANETS() {
-        return STAR_CONFIG.MAX_NUMBER_OF_PLANETS;  
+    static get NUMBER_OF_PLANETS() {
+        return STAR_CONFIG.NUMBER_OF_PLANETS;
     }
 }
 

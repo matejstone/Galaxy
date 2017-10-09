@@ -49,10 +49,9 @@ function _calculateTimeFromDistance(distance) {
     const MIN_TIME = PLANET_CONFIG.PLANET_ORBITAL_TIME.MIN;
     const MAX_TIME = PLANET_CONFIG.PLANET_ORBITAL_TIME.MAX;
 
-    const val = (((MAX_TIME - MIN_TIME) / DISTANCE_DIFF) * DISTANCE_CURRENT) + MIN_TIME - ((MIN_DISTANCE * (MAX_TIME - MIN_TIME) / DISTANCE_DIFF));
+    const time = (((MAX_TIME - MIN_TIME) / DISTANCE_DIFF) * DISTANCE_CURRENT) + MIN_TIME - ((MIN_DISTANCE * (MAX_TIME - MIN_TIME) / DISTANCE_DIFF));
 
-    console.log('value', Math.floor(val));
-    return Math.floor(val);
+    return Math.floor(time);
 }
 
 function _calculateOrbitalPosition(maxOrbitalTime) {

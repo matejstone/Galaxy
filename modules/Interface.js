@@ -84,7 +84,8 @@ const _interface = {
         },
         generateSystem() {
             return new Promise((resolve, reject) => {
-                const numPlanets = Math.floor(Star.MAX_NUMBER_OF_PLANETS * Math.random());
+                const _numPlanets = Math.floor(Star.NUMBER_OF_PLANETS.MAX * Math.random()) + Star.NUMBER_OF_PLANETS.MIN;
+                const numPlanets = _numPlanets > Star.NUMBER_OF_PLANETS.MAX ? Star.NUMBER_OF_PLANETS.MAX : _numPlanets;
                 const planets = [];
 
                 for (let i = 0; i < numPlanets; i++) {
