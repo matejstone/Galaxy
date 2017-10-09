@@ -1,7 +1,8 @@
+require('app-module-path').addPath('.');
 const fs = require('fs');
 const pureimage = require('pureimage');
 const Color = require('color');
-
+const Database = require('modules/Database');
 /****************************************************
 * Configurable Settings
 *****************************************************/
@@ -25,8 +26,11 @@ const GALAXY_HEIGHT = GALAXY_WIDTH;
 const IMAGE_FILENAME = 'galaxy.png';
 const IMAGE_PADDING = 200;
 
+// Database
+const INSERT_INTO_DB = true;
+
 // Star Configuration
-const STAR_TYPES = {
+const STAR_CLASSES = {
     M: {
         color: Color.rgb(252, 152, 30),
         // temperature: {
@@ -88,12 +92,13 @@ function run() {
         resolve(starsData);
     })
     .then(drawStarsOnImage)
+    .then(insertStarsIntoDatabase);
 }
 
-function getStarsAndWriteImage() {
-    const starsData = getStars();
-    drawStarsOnImage(starsData);
-}
+// function getStarsAndWriteImage() {
+//     const starsData = getStars();
+//     drawStarsOnImage(starsData);
+// }
 
 function getStars() {
     const stars = [];
@@ -122,14 +127,28 @@ function drawStarsOnImage(stars) {
     });
 }
 
+function insertStarsIntoDatabase(stars) {
+    if (INSERT_INTO_DB) {
+        const db = Database();
+
+        stars.forEach(star => {
+            db.query(
+                'INSERT INTO `galaxy`.`stars` '
+                + '(x, y, class, color, brightness) '
+                + `VALUES (${star.position.x}, ${star.position.y}, '${star.class}', '${JSON.stringify(star.color)}', ${star.brightness}) `
+            );
+        });
+    }
+}
+
 function getRandomStar() {
     const position = getStarPosition();
-    const type = getStarType();
+    const class = getStarClass();
     const brightness = getStarBrightness();
-    const color = getStarColorFromType(type);
+    const color = getStarColorFromClass(class);
 
     const star = {
-        type,
+        class,
         color,
         position,
         brightness,
@@ -186,25 +205,25 @@ function getAngle(distance) {
     return angle;
 }
 
-function getStarType() {
-    const starTypeValue = Math.random();
+function getStarClass() {
+    const starClassValue = Math.random();
 
-    if (starTypeValue < 0.60) {
+    if (starClassValue < 0.60) {
         return 'M';
     }
-    else if (starTypeValue < 0.75) {
+    else if (starClassValue < 0.75) {
         return 'K';
     }
-    else if (starTypeValue < 0.85) {
+    else if (starClassValue < 0.85) {
         return 'G';
     }
-    else if (starTypeValue < 0.9) {
+    else if (starClassValue < 0.9) {
         return 'F';
     }
-    else if (starTypeValue < 0.95) {
+    else if (starClassValue < 0.95) {
         return 'A';
     }
-    else if (starTypeValue < 0.99) {
+    else if (starClassValue < 0.99) {
         return 'B';
     }
 
@@ -217,8 +236,8 @@ function getStarBrightness() {
     return alpha;
 }
 
-function getStarColorFromType(type) {
-    return STAR_TYPES[type].color.object();
+function getStarColorFromClass(class) {
+    return STAR_CLASSES[class].color.object();
 }
 
 function getX(distance, angle) {

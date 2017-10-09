@@ -1,3 +1,4 @@
+require('app-module-path').addPath('.');
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -26,9 +27,32 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // usePassport(app);
-// useInterface(app);
+useInterface(app);
+
+app.use((req, res, next) => {
+    res.interface.Player.getById(1)
+    .then(player => {
+        req.player = player;
+        return player;
+    })
+    .then(player => player.load('ship'))
+    .then(ship => ship.load('star'))
+    .then(ship => ship.load('stars-in-scan-range'))
+    .then(ship => ship.load('stars-in-jump-range'))
+    .then(ship => ship.load('stars-scanned-ids'))
+    .then(ship => {
+        req.ship = ship;
+        return ship;
+    })
+    .then(ship => ship.star.generateSystem())
+    .then(star => {
+        next();
+    });
+    
+});
 
 app.listen(PORT, HOSTNAME, () => console.log(`Listening on ${HOSTNAME}:${PORT}`));
+
 app.use(router);
 app.use(errorNotFound);
 app.use(errorHandler);

@@ -1,0 +1,86 @@
+.maintain-aspect-ratio {
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.star-chart {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+
+.planet, .star {
+    position: absolute;
+}
+
+.planet:after, .star:after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    transform-origin: center;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.star {
+    transform-origin: center center;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.star:after {
+    transform-origin: center center;
+    background:  radial-gradient(circle, #FCFC14, #FF7700);
+    box-shadow:  0px 0px 40px #FF7700;
+    margin: auto;
+    width: 5%;
+    height: 5%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.planet {
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* duration | timing-function | delay | name */
+    animation-timing-function: linear;
+    animation-name: planetOrbit;
+    animation-iteration-count: infinite;
+    /* animation: planetOrbit 30s linear infinite; */
+}
+
+.planet:after {
+    top: 65%;
+    left: 65%;
+    background: radial-gradient(circle, #DB9969, #69462E);
+}
+
+.orbit {
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    border: 2px solid #dddddd;
+    border-radius:  50%;  
+}
+
+@keyframes planetOrbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

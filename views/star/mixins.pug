@@ -1,0 +1,91 @@
+mixin star-details(star)
+    .well
+        .row
+            .col-xs-10
+                table
+                    tr
+                        td
+                            strong
+                                | Name
+                        td
+                            | #{star.name}
+                    tr
+                        td
+                            strong
+                                | Id
+                        td
+                            | #{star.id}
+                    if (attributes.show_distance)
+                        tr
+                            td
+                                strong
+                                    | Distance
+                            td
+                                | #{star.distance}
+                    if (attributes.status)
+                        tr
+                            td
+                                strong
+                                    | Status
+                            td
+                                | #{attributes.status}
+            if (attributes.show_controls)
+                .col-xs-2
+                    btn.btn.btn-xs(class=star.is_scanned ? 'btn-disabled' : 'btn-primary')
+                        span.fa.fa-search
+                    - const outOfRange = attributes.jumpRange < star.distance;
+                    btn.btn.btn-xs(class=outOfRange ? 'btn-disabled' : 'btn-info' disabled=outOfRange)
+                        span.fa.fa-arrow-right
+
+mixin star-list(starList, ship)
+    each star in starList
+        if (!attributes.excludeIds || attributes.excludeIds.indexOf(star.id) < 0)
+            +star-details(star)(show_distance=attributes.show_distance show_controls=attributes.show_controls jumpRange=ship.jumpRange)
+
+mixin star-planets(planets)
+    .well
+        if planets.length
+            each planet in planets
+                .well
+                    table
+                        tr
+                            td
+                                strong
+                                    | Planet Type
+                            td
+                                | #{planet.type_name}
+                        tr
+                            td
+                                strong
+                                    | Description
+                            td
+                                | #{planet.description}
+        else
+            | There are no planets circling this star.
+
+mixin star-chart(star)
+    .well
+        .star-chart
+            .star(id=`star-${star.id}`)
+            - let index = 0;
+            - const MIN_TIME = 3;
+            - const MAX_TIME = 300;
+            - function calculateTimeFromDistance(distance) { return (((MAX_TIME - MIN_TIME) / 55) * distance) + MIN_TIME - ((10 * (MAX_TIME - MIN_TIME) / 55)); }
+            each planet in star.planets
+                - index++;
+                - const position = planet.distance * 55 + 10;
+                - const animationDuration = calculateTimeFromDistance(position);
+                - const animationDelay = Math.floor(Math.random() * (animationDuration * 2)) + 1;
+                .planet(id=`planet-${index}`)
+                style
+                    | #planet-#{index} {
+                    |   animation-delay: -#{planet.orbitalPosition}s;
+                    |   animation-duration: #{planet.orbitalTime}s;
+                    | }
+                    | #planet-#{index}:after {
+                    |   top: #{planet.orbitalDistance}%;
+                    |   left: #{planet.orbitalDistance}%;
+                    - const randomColor1 = Math.floor(Math.random()*16777215).toString(16);
+                    - const randomColor2 = Math.floor(Math.random()*16777215).toString(16);
+                    |   background: radial-gradient(circle, ##{randomColor1}, ##{randomColor2});
+                    | }

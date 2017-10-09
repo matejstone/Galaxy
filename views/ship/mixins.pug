@@ -1,0 +1,39 @@
+mixin ship-details(ship)
+    .well
+        table
+            tr
+                td
+                    | Name
+                td
+                    | #{ship.name}
+            tr
+                td
+                    | Id
+                td
+                    | #{ship.id}
+            tr
+                td
+                    | Status
+                td
+                    | #{ship.status}
+            tr
+                td
+                    | Star ID
+                td
+
+                    | #{ship.star.id}
+            tr
+                td
+                    | Orbiting Star
+                td
+                    | #{ship.star.name}
+            tr
+                td
+                    | Scan Range
+                td
+                    | #{ship.scanRange}
+            tr
+                td
+                    | Jump Range
+                td
+                    | #{ship.jumpRange}

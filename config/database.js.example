@@ -1,5 +1,5 @@
 exports.config = {
-	host: 'localhost',
+    host: 'localhost',
     user: 'user',
     password: 'password',
     database: 'galaxy',

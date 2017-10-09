@@ -1,0 +1,35 @@
+extends layout.pug
+include ship/mixins.pug
+include star/mixins.pug
+
+block content
+    .row
+        .col-xs-12.col-sm-6
+            ul.nav.nav-tabs(role='tablist')
+                +tab-nav-item('player', 'Player')
+                +tab-nav-item('ship', 'Ship')(class='active')
+            .tab-content
+                +tab-pane('player')
+                    | Player
+                +tab-pane('ship')(class='active in')
+                    +ship-details(ship)
+                    +star-details(ship.star)(status='In Orbit' show_controls=false)
+                    +star-planets(ship.star.planets)
+        .col-xs-12.col-sm-6
+            ul.nav.nav-tabs(role='tablist')
+                +tab-nav-item('star', 'Current Star')(class='active')
+                +tab-nav-item('scanner', 'Nearby Stars')
+            .tab-content
+                +tab-pane('star')(class='active in')
+                    +star-chart(ship.star)
+                +tab-pane('scanner')
+                    +star-list(ship.stars_in_scan_range, ship)(show_controls=true show_distance=true excludeIds=[ship.star.id])
+
+mixin tab-nav-item(name, text)
+    li(role='presentation' class=attributes.class)
+        a(href=`#${name}` role='tab' aria-controls=name data-toggle='tab')
+            | #{text}
+
+mixin tab-pane(name)
+    .tab-pane.fade(role='tabpanel' id=name class=attributes.class)
+        block
